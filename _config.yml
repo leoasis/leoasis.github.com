@@ -1,0 +1,15 @@
+markdown: rdiscount
+pygments: true
+permalink: /posts/:year/:month/:day/:title
+auto: true
+rdiscount:
+  extensions: [smart]
+
+name: Leonardo Garcia Crespo
+fname: Leo
+lname: Garcia Crespo
+url: http://leoasis.github.com
+description: Badass Literally Obfuscated Guy
+twitter: leogcrespo
+github: leoasis
+gravatar_url: http://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58

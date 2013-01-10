@@ -2,6 +2,7 @@
 layout: post
 title: Hello, World!
 category: posts
+comments: false
 ---
 
 Well, the title for my first post is kind of mandatory, right? No? Well,

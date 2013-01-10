@@ -13,3 +13,7 @@ description: Badass Literally Obfuscated Guy
 twitter: leogcrespo
 github: leoasis
 gravatar_url: http://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58
+
+comments:
+  disqus:
+    short_name: leogcrespo

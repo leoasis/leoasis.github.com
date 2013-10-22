@@ -5,62 +5,78 @@ body {
   -webkit-font-smoothing: antialiased; }
 
 a {
-  color: #227ce8; }
+  color: #de3f1c; }
+  a:hover {
+    color: #832511; }
 
-.sidebar {
+header {
   position: fixed;
-  left: 15px;
-  top: 15px;
-  width: 80px;
+  background: #1d1d1d;
+  height: 60px;
+  width: 100%;
+  margin-top: 15px;
   font-family: Helvetica, sans-serif; }
-  .sidebar a {
+  header a {
     text-decoration: none; }
-  .sidebar img {
+  header img {
     padding: 0 3px;
     border: 0; }
-  .sidebar .avatar {
+  header .avatar {
     padding: 0;
-    margin-left: 2px;
-    border-radius: 5px; }
-  .sidebar .name {
+    margin-left: 12px;
+    margin-top: -7px;
+    border-radius: 38px; }
+  header .header-row {
+    position: absolute;
+    left: 100px;
+    top: 0;
+    height: 60px;
+    width: 100%; }
+  header .name {
     text-transform: uppercase;
-    margin: 10px 0 20px 0; }
-    .sidebar .name #fname {
+    margin: 15px 0 20px 0;
+    float: left; }
+    header .name #fname {
       padding-left: 1px;
       font-size: 23px;
       letter-spacing: 5px;
-      color: black; }
-    .sidebar .name #lname {
-      font-size: 17px;
+      color: white; }
+    header .name #lname {
+      font-size: 23px;
       font-weight: bold;
       letter-spacing: 1px;
-      color: black; }
-  .sidebar .meta a {
-    margin-left: 0px;
-    color: black; }
-    .sidebar .meta a:hover {
-      color: #227ce8; }
-  .sidebar .sections {
-    margin: 15px 0 0 0; }
-    .sidebar .sections a {
+      color: white; }
+  header .meta {
+    margin-left: 15px; }
+    header .meta a {
+      margin-left: 0px;
+      color: white; }
+      header .meta a:hover {
+        color: #227ce8; }
+  nav {
+    margin: 20px 0 0 20px;
+    float: left; }
+    nav a {
       padding: 3px 0;
-      color: black;
+      color: white;
       font-weight: bold;
       font-size: 12px;
       display: block; }
-      .sidebar .sections a:hover {
+      nav a:hover {
         color: #227ce8; }
-    .sidebar .sections ul {
+    nav ul {
       margin: 0;
       padding: 0; }
-    .sidebar .sections li {
+    nav li {
       list-style: none;
-      margin-bottom: 7px; }
+      margin-bottom: 7px;
+      float: left;
+      margin-left: 30px; }
 
 .content {
-  margin-left: 110px;
-  width: 650px;
-  margin-bottom: 50px; }
+  margin: 0 auto;
+  padding-top: 80px;
+  width: 960px; }
   .content h1 {
     color: #333;
     font-family: "Yanone Kaffeesatz", Helvetica, sans-serif;
@@ -152,14 +168,14 @@ a {
     font-family: Helvetica, sans-serif;
     line-height: 1.6em; }
   .content .listing {
-    margin: 10px 0 0 0;
+    margin: 30px 0 0 0;
     padding: 0;
     font-family: Helvetica, sans-serif; }
     .content .listing ul {
       margin: 0;
       padding: 0; }
     .content .listing li {
-      font-size: 13px;
+      font-size: 16px;
       list-style: none;
       padding: 5px 3px;
       margin: 0;

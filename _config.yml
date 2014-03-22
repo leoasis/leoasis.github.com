@@ -1,3 +1,7 @@
+safe: true
+source: .
+lsi: false
+exclude: ['vendor']
 markdown: rdiscount
 pygments: true
 permalink: /posts/:year/:month/:day/:title

@@ -3,7 +3,8 @@ source: .
 lsi: false
 exclude: ['vendor']
 markdown: rdiscount
-highlighter: rouge
+# highlighter: rouge
+highlighter: pygments
 permalink: /posts/:year/:month/:day/:title
 rdiscount:
   extensions: [smart]

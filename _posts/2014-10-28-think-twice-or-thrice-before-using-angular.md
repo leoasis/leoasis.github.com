@@ -1,8 +1,10 @@
 ---
 layout: post
-title: Let's Stop Using Angular
+title: Think Twice (or Thrice) Before Using Angular
 category: posts
 ---
+
+_(Special thanks to [@_joliv](https://twitter.com/_joliv), [@sgianazza](https://twitter.com/sgianazza) and [@rafaelchiti](https://twitter.com/rafaelchiti) for reviewing and sending feedback.)_
 
 For the past two years or so I've been developing in my full time job with Angular for client side Javascript. While I love learning new stuff, I was never sold on it. I didn't use it in my personal, fun or freelance projects where the tech stack was for me to choose.
 
@@ -63,15 +65,19 @@ Some other solutions, like React, do dirty checking at the view level, by diffin
 ## API is halfway there (enygmatic symbols to use in a directive)
 
 Have you seen how the directive API looks in angular?
-```js
-restrict: 'EAC',
-require: '^?parentDirective',
-scope: {
-  foo: '=',
-  bar: '&theBar',
-  baz: '@someBaz'
-}
-```
+
+{% highlight js %}
+return {
+  restrict: 'EAC',
+  require: '^?parentDirective',
+  scope: {
+    foo: '=',
+    bar: '&theBar',
+    baz: '@someBaz'
+  }  
+};
+{% endhighlight %}
+
 This is so cryptic. You need to rely on special characters, symbols and conventions in between to see what that actually does. That is not a good sign of a clear, easy to use API.
 Same thing goes for the syntax of `ngOptions` and `ngRepeat`, for which I always need some documentation lookup to see how to structure the expression. Again, not clear.
 

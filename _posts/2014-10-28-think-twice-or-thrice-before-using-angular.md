@@ -62,7 +62,7 @@ Angular starts to get slow when there are more than 2000 bindings in your page. 
 
 Some other solutions, like React, do dirty checking at the view level, by diffing the DOM state using lightweight representations of it. This is way more performant, since this doesn't depend on how much data you have, and it is directly proportional on the amount of DOM elements you have in your page, which directly corresponds to how well you design your pages for humans to use.
 
-## API is halfway there (enygmatic symbols to use in a directive)
+## API is halfway there
 
 Have you seen how the directive API looks in angular?
 

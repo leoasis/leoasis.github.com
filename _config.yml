@@ -1,10 +1,9 @@
-safe: true
 source: .
+plugins: ./_plugins
 lsi: false
-exclude: ['vendor']
+exclude: ['vendor', 'Gemfile', 'Gemfile.lock', 'LICENSE', 'README.md']
 markdown: rdiscount
-# highlighter: rouge
-highlighter: pygments
+highlighter: rouge
 permalink: /posts/:year/:month/:day/:title
 rdiscount:
   extensions: [smart]
@@ -13,7 +12,7 @@ name: Leonardo Garcia Crespo
 fname: Leo
 lname: Garcia Crespo
 url: http://leoasis.github.com
-description: Badass Literally Obfuscated Guy
+description: Sharing my thoughts to the world
 twitter: leogcrespo
 gravatar_url: http://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58
 
@@ -24,3 +23,8 @@ comments:
 analytics:
   google:
     tracking_id: UA-37579559-1
+
+assets:
+  compress:
+    css:  sass
+    js:   uglifier

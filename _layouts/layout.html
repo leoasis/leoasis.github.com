@@ -43,36 +43,11 @@
 </head>
 
 <body>
-  <header>
-    <a href="/">
-      <img src="{{ site.gravatar_url }}?s=150" height="75" width="75" class="avatar" />
-    </a>
-
-    <div class="header-row">
-      <section class="name">
-        <a href="/">
-          <span id="fname">{{ site.fname }}</span>
-          <span id="lname">{{ site.lname }}</span>
-        </a>
-      </section>
-      <nav>
-        <ul>
-          <li><a href="/about.html">about</a></li>
-          <li><a href="/">posts</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <section class="meta">
-      <a href="{{ site.github_url }}" target="_blank"><img src="{% asset_path github.png %}" /></a>
-      <a href="https://twitter.com/{{ site.twitter }}" target="_blank"><img src="{% asset_path twitter.png %}"></a>
-      <a href="/atom.xml"><img src="{% asset_path rss.png %}" /></a>
-    </section>
-
-
-  </header>
-
-  {{ content }}
+  {% include header.html %}
+  <main>
+    {{ content }}
+  </main>
+  {% include footer.html %}
 </body>
 
 </html>

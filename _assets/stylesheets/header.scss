@@ -1,0 +1,53 @@
+header {
+  border-bottom: 1px solid $graySubtle;
+  font-family: Helvetica, sans-serif;
+  font-weight: 200;
+
+  .avatar {
+    border: 0;
+    padding: 0;
+    border-radius: 25px;
+    vertical-align: middle;
+  }
+
+  nav {
+    a {
+      color: $blackFont;
+      font-size: 1.2em;
+      text-decoration: none;
+
+      &:hover {
+        opacity: 0.4;
+        color: inherit;
+      }
+    }
+
+    ul {
+      margin: 0;
+      margin-left: 20px;
+      padding: 0;
+      line-height: 2;
+    }
+
+    li {
+      list-style: none;
+      display: inline;
+      margin: 0 0.3em;
+    }
+  }
+
+  &.with-dark-background {
+    border-bottom: none;
+    background: black;
+
+    nav {
+      a {
+        color: white;
+      }
+    }
+  }
+
+  .intro {
+    color: white;
+  }
+}

@@ -1,4 +1,4 @@
-<header {% if page.headerWithIntro %}class="with-dark-background"{% endif %}>
+<header>
     <nav>
     <ul>
       <li>
@@ -7,15 +7,10 @@
         </a>
       </li>
       <li><a href="/">Posts</a></li>
+      <li><a href="/about.html">About</a></li>
       <li><a href="/atom.xml">RSS</a></li>
       <li><a href="{{ site.github_url }}" target="_blank">Github</a></li>
       <li><a href="https://twitter.com/{{ site.twitter }}" target="_blank">Twitter</a></li>
-      <li><a href="/about.html">About</a></li>
     </ul>
   </nav>
-  {% if page.headerWithIntro %}
-    <div class="intro">
-      My name is Leonardo Garcia Crespo, but you can call me Lenny. I'm a fan of technology, mainly frontend and functional programming. Also a lover of music, bass player and funny bad jokes teller.
-    </div>
-  {% endif %}
 </header>

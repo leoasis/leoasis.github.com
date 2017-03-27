@@ -35,19 +35,4 @@ header {
       margin: 0 0.3em;
     }
   }
-
-  &.with-dark-background {
-    border-bottom: none;
-    background: black;
-
-    nav {
-      a {
-        color: white;
-      }
-    }
-  }
-
-  .intro {
-    color: white;
-  }
 }

@@ -1,12 +1,12 @@
 source: .
-plugins: ./_plugins
+plugins_dir: ./_plugins
 lsi: false
 exclude: ['vendor', 'Gemfile', 'Gemfile.lock', 'LICENSE', 'README.md']
-markdown: rdiscount
-highlighter: rouge
+
+gems:
+  - jekyll-assets
+
 permalink: /posts/:year/:month/:day/:title
-rdiscount:
-  extensions: [smart]
 
 name: Leonardo Garcia Crespo
 fname: Leo
@@ -24,8 +24,3 @@ comments:
 analytics:
   google:
     tracking_id: UA-37579559-1
-
-assets:
-  compress:
-    css:  sass
-    js:   uglifier

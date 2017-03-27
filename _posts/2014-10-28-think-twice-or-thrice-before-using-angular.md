@@ -66,7 +66,7 @@ Some other solutions, like React, do dirty checking at the view level, by diffin
 
 Have you seen how the directive API looks in angular?
 
-{% highlight js %}
+```js
 return {
   restrict: 'EAC',
   require: '^?parentDirective',
@@ -76,7 +76,7 @@ return {
     baz: '@someBaz'
   }  
 };
-{% endhighlight %}
+```
 
 This is so cryptic. You need to rely on special characters, symbols and conventions in between to see what that actually does. That is not a good sign of a clear, easy to use API.
 Same thing goes for the syntax of `ngOptions` and `ngRepeat`, for which I always need some documentation lookup to see how to structure the expression. Again, not clear.

@@ -24,24 +24,24 @@ So the first thing you should try to do is have the least number of queries per 
 
 It's a very common thing to need several queries to fulfill a request. And they are not always solvable eagerly including associations, since those queries do not always involve associations. For example, say you want to have a list of articles that is paginated. You would do something like this:
 
-{% highlight ruby %}
+```ruby
 # inside an action in a controller...
 page_size = 20
 page_start = (params[:page] - 1) * page_size
 @articles = Article.order(:name).limit(page_size).offset(page_start)
 @articles_count = Article.count
-{% endhighlight %}
+```
 
 Of course, you are using a gem to paginate, and not doing this manually. I did this to show you more explicitly that pagination involves always two queries to the database. Well, you might say that there's no way to reduce those 2 queries any further, and you'd be right. You _DO_ need those 2 queries. But do you need to go _twice_ to the database and ask for a single query each time? No! we could issue both queries in a single round trip, using multiple statements.
 
 Before going further with this, let's see another example. Suppose you are now diplaying the index page of a marketplace, where you see the newest articles, the top shoppers, the top purchased categories and interesting articles based on your previous purchases. You may have something like this:
 
-{% highlight ruby %}
+```ruby
 @newest_articles = Article.order("published_at desc").limit(10)
 @top_shoppers = User.order("purchase_count desc").limit(5)
 @top_categories = Category.most_purchased
 @interesting_articles = Article.interesting_for(current_user)
-{% endhighlight %}
+```
 
 Here you see again that we cannot reduce the query amount any further, since that is exactly the info that we need to show. Still, we're making 4 database round trips, without counting the potential extra one for `current_user`. We can do better than that!
 
@@ -53,13 +53,13 @@ This gem extends ActiveRecord by allowing it to do just that: batch queries in a
 
 Using the future pattern, you build up your relation with the conditions that you need, and before retrieving the result, you tell it that you want a "future value", that is, a value that you will use later on. Let's use the pagination example for this. This is how you would rewrite it:
 
-{% highlight ruby %}
+```ruby
 # inside an action in a controller...
 page_size = 20
 page_start = (params[:page] - 1) * page_size
 @articles = Article.order(:name).limit(page_size).offset(page_start).future
 @articles_count = Article.future_count.value
-{% endhighlight %}
+```
 
 Notice the `future` and `future_count.value` changes? Let's see what this does. The `future` call tells the relation that you want the result from the query it builds, but not yet. It enqueues the query in a list, waiting to be sent when it really needs to. `future_count` does something similar. But instead of equeuing the query of the relation, it enqueues the `count` of it.
 

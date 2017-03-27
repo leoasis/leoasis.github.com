@@ -6,7 +6,7 @@ category: posts
 
 I wanted to start documenting some React patterns that are common when developing. Most importantly because doing this will make me do some research in order to understand more accurately when those patterns are a good fit and when they aren't, and what are the tradeoffs involved in using or not using them. Hope you find these posts as useful as they are for me!
 
-So today, I want to start with this pattern called “Render callbacks”. I think the name was coined by Ryan Florence on Twitter, not happy with the alternative name “function as child”, which was not entirely precise, as this pattern isn't only constrained to the `children` prop.
+So today, I want to start with this pattern called “Render callbacks”. I think the name was coined by [Ryan Florence](https://twitter.com/ryanflorence) on Twitter, not happy with the alternative name “function as child”, which was not entirely precise, as this pattern isn't only constrained to the `children` prop.
 
 ## When to use it
 

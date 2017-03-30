@@ -11,15 +11,16 @@ permalink: /posts/:year/:month/:day/:title
 name: Leonardo Garcia Crespo
 fname: Leo
 lname: Garcia Crespo
-url: http://leoasis.github.com
+url: https://leoasis.github.io
 description: Sharing my thoughts to the world
 github_url: https://github.com/leoasis
+repository: leoasis/leoasis.github.com
 twitter: leogcrespo
-gravatar_url: http://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58
+gravatar_url: https://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58
 
-comments:
-  disqus:
-    short_name: leogcrespo
+assets:
+  cdn: ""
+  skip_baseurl_with_cdn: true
 
 analytics:
   google:

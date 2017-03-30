@@ -2,13 +2,12 @@ require "rubygems"
 require "tmpdir"
 
 require "bundler/setup"
-require "jekyll"
 
 GITHUB_REPONAME = "leoasis/leoasis.github.com"
 
 desc "Generate blog files"
 task :generate do
-  Jekyll::Site.new(Jekyll.configuration({})).process
+  system "JEKYLL_ENV=production jekyll build"
 end
 
 

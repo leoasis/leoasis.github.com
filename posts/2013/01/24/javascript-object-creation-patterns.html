@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Javascript object creation patterns &ndash;
+    
+    Leonardo Garcia Crespo
+  </title>
+
+  <meta name="author" content="Leonardo Garcia Crespo" />
+  <meta name="description" content="Sharing my thoughts to the world" />
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link type="text/css" rel="stylesheet" href="/assets/app-069c33e98bdadd80eeea11c2930774a9cd75fe707f8b0406b35c3c0961a2df9e.css">
+  <link type="text/css" rel="stylesheet" href="/assets/syntax-891384f4103a9322d940126665632dfdcde8aa583582093f916f548c78e66ba8.css">
+
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script type="text/javascript" src="/assets/app-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.js"></script>
+  
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-37579559-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+    <ul>
+      <li>
+        <a href="/">
+          <img src="https://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58?s=150" height="25" width="25" class="avatar" />
+        </a>
+      </li>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/atom.xml">RSS</a></li>
+      <li><a href="https://github.com/leoasis" target="_blank">Github</a></li>
+      <li><a href="https://twitter.com/leogcrespo" target="_blank">Twitter</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <main>
+    <section class="content">
+  <h1>
+    <a href="/posts/2013/01/24/javascript-object-creation-patterns">Javascript object creation patterns</a>
+  </h1>
+
+  <section class="byline">
+    January 24, 2013
+  </section>
+
+  <p>I’m writing this post because my folks at work thought it might be helpful, since not all of the devs out there are familiar with the way that Javascript objects and prototypes work.</p>
+
+<p>These concepts are basic for all Javascript developers, and by basic I mean that in the way of “building the basis for the rest of the concepts you’ll learn in Javascript”, and not the “it’s sooo trivial, how can’t you know that?” meaning.</p>
+
+<p>This is the summary of the patterns I’ll cover:</p>
+
+<ol>
+  <li>Object literal</li>
+  <li>Function that returns an object</li>
+  <li>Constructor function</li>
+  <li>Constructor function with prototype</li>
+  <li>Object.create</li>
+</ol>
+
+<h2 id="object-literal">Object literal</h2>
+
+<p>This is the most used pattern. It’s just defining the properties of an object between curly braces. That’s it.
+You can create one time objects by using the object literal and assigning the properties and methods you need.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">guy</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s2">"John"</span><span class="p">,</span>
+  <span class="na">awesome</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="na">aboutMe</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="p">?</span> <span class="s2">"I'm awesome!"</span> <span class="p">:</span> <span class="s2">"I'm lame :("</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>The good thing about this pattern is its simplicity. Just create an object right away and start using it. The bad thing is that it is explicit: you need to specify each and every property that the object has, there is no “class” already defined elsewhere that you can just use to create an instance with.</p>
+
+<p>This pattern is mostly suitable for creating one time objects, singleton objects, or objects that act as hashes.
+It is not good for creating multiple similar objects, because by definition, this pattern is a one time creational one: you define the object and you get it built.</p>
+
+<h2 id="function-that-returns-an-object">Function that returns an object</h2>
+
+<p>This patterns adds into the previous one, by encapsulating the object definition inside a function. It is just the factory method pattern.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">createGuy</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">awesome</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">awesomeness</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"I'm awesome!"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">lameness</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"I'm lame :("</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
+    <span class="na">awesome</span><span class="p">:</span> <span class="nx">awesome</span><span class="p">,</span>
+    <span class="na">aboutMe</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="p">?</span> <span class="nx">awesomeness</span><span class="p">()</span> <span class="p">:</span> <span class="nx">lameness</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">guy</span> <span class="o">=</span> <span class="nx">createGuy</span><span class="p">(</span><span class="s2">"John"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>This one is suitable for creating complex objects, and you don’t want the caller to know how it is built. It also adds a way to define “private” methods, by declaring them inside the scope of the factory function, which will not be visible outside that scope.</p>
+
+<p>As we’re creating a full blown new object each time we call the function, we have memory usage issues if we want to create a lot of “instances” (actually, to the engine they are independent objects that happen to have properties and functions that behave the same).</p>
+
+<h2 id="constructor-function">Constructor function</h2>
+
+<p>This pattern is similar to the previous one, but with some subtle differences. We don’t return the object anymore, in fact, the function itself doesn’t return anything. Also, we set the object-to-be-constructed’s properties by using <code class="highlighter-rouge">this</code>. There is also another difference in the caller, and it’s an important one: the function is called with a prefixed <code class="highlighter-rouge">new</code> operator. This indicates that we are using that function as a constructor. Basically what it does internally is creating a new object, making it accessible to the constructor via the <code class="highlighter-rouge">this</code> keyword, assigning the object’s <em>prototype</em> to the one pointed by the function’s <code class="highlighter-rouge">prototype</code> property, and returning it implicitly. We’ll see that thing about prototypes in the following pattern, so for now just look at this example:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Guy</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">awesome</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// Some "private" methods</span>
+  <span class="kd">function</span> <span class="nx">awesomeness</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"I'm awesome!"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">lameness</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"I'm lame :("</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="o">=</span> <span class="nx">awesome</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">aboutMe</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="p">?</span> <span class="nx">awesomeness</span><span class="p">()</span> <span class="p">:</span> <span class="nx">lameness</span><span class="p">();</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">guy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Guy</span><span class="p">(</span><span class="s2">"John"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>As it is so similar to the previous pattern, it remains useful in the same scenarios or needs. As a drawback, you <em>have</em> to remember to call that function with the <code class="highlighter-rouge">new</code> operator. If you don’t, it will be treated as a regular function, and in regular functions <code class="highlighter-rouge">this</code> points to the global object, that is, <code class="highlighter-rouge">window</code> for browsers and <code class="highlighter-rouge">global</code> for nodejs.</p>
+
+<h2 id="constructor-function-with-prototype">Constructor function with prototype</h2>
+
+<p>This patterns makes use of the previously described <code class="highlighter-rouge">prototype</code> property from the function, to set the object’s <em>prototype</em> (note that I’m making a distinction here, since those two concepts, while related, are not the same).</p>
+
+<p>We could rewrite the previous example like this:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Guy</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">awesome</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="o">=</span> <span class="nx">awesome</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Guy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">aboutMe</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="p">?</span> <span class="s2">"I'm awesome!"</span> <span class="p">:</span> <span class="s2">"I'm lame :("</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">guy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Guy</span><span class="p">(</span><span class="s2">"John"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>What’s the difference? Well to understand that, we need to know that in Javascript, every object has an internal property (not accessible, at least not in a standard way) that is the <em>prototype</em>. This <em>prototype</em> is another object, which will be used in the lookup chain for the methods being called in the object.
+Also, a function (which is also an object in Javascript) contains a property called <code class="highlighter-rouge">prototype</code>, which is not the function’s <em>prototype</em>, but a special property that the engine uses when using the function as a constructor (using the <code class="highlighter-rouge">new</code> keyword) to assign the <em>prototype</em> to the newly created object.</p>
+
+<p>In the example, we’re constructing a new object, <code class="highlighter-rouge">guy</code>, that has a <em>prototype</em> which contains a method called <code class="highlighter-rouge">aboutMe</code>. With the lookup chain, we can call <code class="highlighter-rouge">guy.aboutMe()</code> and it will finally call the <em>prototype</em>’s method.</p>
+
+<p>So what’s the benefit of doing this? As you can see, we’re defining a set of methods and properties to be shared by the instances created using that constructor, just like in the patterns before, but in this case, this is <em>true</em> sharing: all the instances have a <em>prototype</em> which is the <em>same</em> object for all. In terms of performance, this is a huge win if we’re creating a lot of instances, since the methods and properties will be in just one object, and not copied all over the instances.</p>
+
+<p>One thing to emphasize here, is that the Function’s <code class="highlighter-rouge">prototype</code> property is a <em>reference</em> to the <em>prototypes</em> of the objects created by that function as a constructor. So as a reference, we can get access to it and modify it.</p>
+
+<p>Consider this code is after the code in the previous example:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="nx">Guy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">aboutMe</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">"I'm beyond awesome!"</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">guy</span><span class="p">.</span><span class="nx">aboutMe</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>Here what we’re doing is changing a method of the object that is the <em>prototype</em> of <code class="highlighter-rouge">guy</code>. So now it is clear (perhaps not that clear?) that this code prints “I’m beyond awesome!”, because the aboutMe lookup goes up to the object’s <em>prototype</em> and finds the new aboutMe method (oh, now I got it).</p>
+
+<p>This example is somewhat different, consider that the previous code never happened, and instead this one did:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="nx">Guy</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">aboutMe</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"I'm beyond awesome!"</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">guy</span><span class="p">.</span><span class="nx">aboutMe</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>Is this the same behavior as the example before? Not quite. If you look closer, you’ll see that what I just did was to change the function’s <code class="highlighter-rouge">prototype</code> <em>reference</em> to a new object. So what this means is that we don’t have a reference to the <em>prototype</em> of the instances created by the constructor anymore. This code will print “I’m awesome!”, and will ignore this new aboutMe method, because we never changed <code class="highlighter-rouge">guy</code>’s <em>prototype</em>.</p>
+
+<p>But if we had something like this <em>after</em> this previous example:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">newGuy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Guy</span><span class="p">(</span><span class="s2">"Larry"</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newGuy</span><span class="p">.</span><span class="nx">aboutMe</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>This will indeed call the new <code class="highlighter-rouge">aboutMe</code> method. Why? Because at the moment this instance was created, the function’s <code class="highlighter-rouge">prototype</code> was already the new one, so <code class="highlighter-rouge">newGuy</code> now has the <em>prototype</em> currently referenced by <code class="highlighter-rouge">Guy.prototype</code>, which is different than <code class="highlighter-rouge">guy</code>’s <em>prototype</em>.</p>
+
+<h3 id="prototype-chain">Prototype chain</h3>
+
+<p>Remember that I said that the object’s <em>prototypes</em> are just objects? So this <em>prototype</em> could have its own <em>prototype</em> that in turn could have its own <em>prototype</em> and so on… This is what is called a <em>prototype chain</em>, which is essentially the lookup chain that the engine uses to find the code to execute upon a given call.</p>
+
+<p>This <em>prototype chain</em> is something like inheritance, since basically that is just a lookup chain to know which code to execute. So we could create a new constructor function that has its <code class="highlighter-rouge">prototype</code> be an object that has as <em>prototype</em> the <code class="highlighter-rouge">prototype</code> of <code class="highlighter-rouge">Guy</code>, so that the objects created with this constructor would “extend” <code class="highlighter-rouge">Guy</code>’s functionality:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">NewGuy</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">awesome</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="o">=</span> <span class="nx">awesome</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">NewGuy</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Guy</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+<span class="nx">NewGuy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">shout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">"Aaaaaaahhhh"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">john</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NewGuy</span><span class="p">(</span><span class="s2">"New John"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nx">john</span><span class="p">.</span><span class="nx">aboutMe</span><span class="p">();</span>
+<span class="nx">john</span><span class="p">.</span><span class="nx">shout</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>Well, that works, but it is not pretty. First, we’re duplicating the constructor, and second, we’re creating a new <code class="highlighter-rouge">Guy</code> and passing null parameters (and this actually works because the constructor <code class="highlighter-rouge">Guy</code> does not play enough with the parameters to make all this explode with a null exception). There is a technique to fix this, that is used by many libraries that implement “class extension”, “class inheritance” and such. It’s something like this:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">NewGuy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">Guy</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">ctor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span> <span class="c1">// empty constructor</span>
+<span class="nx">ctor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">Guy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+
+<span class="nx">NewGuy</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ctor</span><span class="p">();</span>
+<span class="nx">NewGuy</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">shout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">"Aaaaaaahhhh"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">john</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NewGuy</span><span class="p">(</span><span class="s2">"New John"</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nx">john</span><span class="p">.</span><span class="nx">aboutMe</span><span class="p">();</span>
+<span class="nx">john</span><span class="p">.</span><span class="nx">shout</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>What did we do here? We’ll get to the constructor in a minute. Notice the <code class="highlighter-rouge">ctor</code> constructor function. It is an empty function, but we set its <code class="highlighter-rouge">prototype</code> property to the <code class="highlighter-rouge">Guy</code>’s one. So now if we create a new <code class="highlighter-rouge">ctor</code> instance, we’re going to have an empty object whose <em>prototype</em> is the same as the one we would get if we created an instance using the <code class="highlighter-rouge">Guy</code> constructor. That’s the key!</p>
+
+<p>As for the constructor, notice we’re just calling the <code class="highlighter-rouge">Guy</code> constructor and passing whatever arguments we get from outside. Notice here we didn’t call <code class="highlighter-rouge">Guy</code> with <code class="highlighter-rouge">new</code>, since that would create a new object, and what we want now is to get the same code executed when creating a <code class="highlighter-rouge">NewGuy</code> instance.</p>
+
+<h2 id="objectcreate">Object.create</h2>
+
+<p>Phewww that last one was pretty long. Got your breath back already? Good. One more to go!</p>
+
+<p>There is one more pattern, which is not available in all browsers (well, it IS in all browsers but IE &lt; 9). It goes like this:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">guyPrototype</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">aboutMe</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">awesome</span> <span class="p">?</span> <span class="s2">"I'm awesome!"</span> <span class="p">:</span> <span class="s2">"I'm lame :("</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">guy</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">guyPrototype</span><span class="p">);</span>
+<span class="nx">guy</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+<span class="nx">guy</span><span class="p">.</span><span class="nx">awesome</span> <span class="o">=</span> <span class="nx">awesome</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>Here we’re doing something similar to the previous pattern. We’re creating objects that have a <em>prototype</em>. This time we do that differently, by using <code class="highlighter-rouge">Object.create</code>. What this does is another way to do what <code class="highlighter-rouge">new</code> does for constructor functions. You set the prototype object as the parameter of <code class="highlighter-rouge">Object.create</code> and it returns a new object whose <em>prototype</em> is that passed object.</p>
+
+<p>This pattern is useful for creating multiple instances from a prototype, just like the previous one. It is also easier to understand (once you get what this prototype fuzz is all about) than the <em>constructor</em> functions with <code class="highlighter-rouge">this</code> and the <code class="highlighter-rouge">new</code> keyword. Some people also like this more because it indicates more clearly the prototipal nature of Javascript.</p>
+
+<p>For the old IE lovers, you can get similar functionality by creating a shim of <code class="highlighter-rouge">Object.create</code> with this code (<a href="http://www.crockford.com">Crockford</a>’s example):</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">!==</span> <span class="s2">"function"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">F</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Or use this optimized version that reuses the constructor function:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">!==</span> <span class="s2">"function"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">F</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+    <span class="p">};</span>
+  <span class="p">})();</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Now that you understand how <code class="highlighter-rouge">new</code> works, I’ll let you understand this code as an exercise.</p>
+
+<p>This shim is not complete though. <code class="highlighter-rouge">Object.create</code> has an optional second parameter used to define the new object’s extra properties. Anyway, you can add that to your shim if you like, or just use it without this second parameter.</p>
+
+<h2 id="to-sum-up">To sum up</h2>
+
+<p>We’ve covered different patterns for creating objects in Javascript. It’s important that you understand the pros and cons of each pattern, because none is pure evil or pure goodness, each pattern work in some cases, does not work in others, or is overkill for some other case. It is your job to use them wisely, with a fundamented reason.</p>
+
+<p>Hope this helped someone! You’re free to go or leave a comment, whatever you please :)</p>
+
+<p>See ya!</p>
+
+
+  <section class="meta">
+  <h3>Discussion, links, and tweets</h3>
+  <section class="copy">
+    <a href="//twitter.com/leogcrespo" target="_blank">
+      <img src="https://gravatar.com/avatar/2d4686084d18b4991674f0cd4fbc6c58?s=142" height="50" width="50" />
+    </a>
+
+    <p>
+      Feel free to ask any questions or give me feedback about any post, new or old, doesn't matter (<a href="//twitter.com/leogcrespo" target="_blank">@leogcrespo</a>).
+    </p>
+
+    <a href="//twitter.com/share" class="twitter-share-button" data-count="none" data-via="leogcrespo">Tweet</a>
+    <a href="//twitter.com/leogcrespo" class="twitter-follow-button" data-show-count="false">Follow @leogcrespo</a>
+    <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+  </section>
+</section>
+
+  
+  <div id="disqus_thread"></div>
+  <script>
+
+    var disqus_config = function () {
+      this.page.url = 'https://leoasis.github.io/posts/2013/01/24/javascript-object-creation-patterns';
+      this.page.identifier = '/posts/2013/01/24/javascript-object-creation-patterns';
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://leogcrespo.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</section>
+
+  </main>
+  <footer>
+  <p>
+  Made with ❤️ by <a href="https://twitter.com/leogcrespo" target="_blank">Lenny</a>
+  </p>
+</footer>
+
+</body>
+
+</html>

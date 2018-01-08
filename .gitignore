@@ -1,8 +1,6 @@
-_site
-.sass-cache
-.asset-cache
-
-node_modules
-
-.bundle
-vendor/bundle
+node_modules/
+public
+.gatsby-context.js
+.DS_Store
+.intermediate-representation/
+.cache/

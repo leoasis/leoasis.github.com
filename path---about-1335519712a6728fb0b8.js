@@ -1,0 +1,2 @@
+webpackJsonp([0xf927f8900006],{365:function(t,a){t.exports={data:{site:{siteMetadata:{title:"Lenny's Blog",author:"Leonardo Andrés Garcia Crespo"}}},pathContext:{}}}});
+//# sourceMappingURL=path---about-1335519712a6728fb0b8.js.map

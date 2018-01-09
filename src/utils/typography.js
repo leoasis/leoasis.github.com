@@ -13,6 +13,12 @@ const typography = new Typography({
     const styles = {
       a: {
         color: strongOrange
+      },
+      body: {
+        MozFontFeatureSettings: "normal",
+        msFontFeatureSettings: "normal",
+        WebkitFontFeatureSettings: "normal",
+        fontFeatureSettings: "normal"
       }
     };
     return styles;

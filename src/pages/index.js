@@ -22,8 +22,8 @@ class BlogIndex extends React.Component {
             [
               "/posts",
               date.getFullYear(),
-              date.getMonth() + 1,
-              date.getDate()
+              String(date.getMonth() + 1).padStart(2, "0"),
+              String(date.getDate()).padStart(2, "0")
             ].join("/") + get(post, "node.frontmatter.path");
 
           return (

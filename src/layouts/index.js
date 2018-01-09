@@ -6,8 +6,10 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { rhythm } from "../utils/typography";
 
+import "../utils/polyfills";
+
 // Styles for code blocks
-require("prismjs/themes/prism-okaidia.css");
+import "prismjs/themes/prism-okaidia.css";
 
 class Template extends React.Component {
   render() {

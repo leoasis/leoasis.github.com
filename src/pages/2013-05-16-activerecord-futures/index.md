@@ -1,7 +1,7 @@
 ---
 title: Introducing ActiveRecord Futures
 date: "2013-05-16T22:12:03.284Z"
-path: "/introducing-activerecord-futures"
+path: "/activerecord-futures"
 ---
 
 I'm back! Long time no see!
@@ -63,7 +63,7 @@ page_start = (params[:page] - 1) * page_size
 
 Notice the `future` and `future_count.value` changes? Let's see what this does. The `future` call tells the relation that you want the result from the query it builds, but not yet. It enqueues the query in a list, waiting to be sent when it really needs to. `future_count` does something similar. But instead of equeuing the query of the relation, it enqueues the `count` of it.
 
-Now here comes the important part. When we call `value` on the object returned from `future_count`, we are now saying that we want the result _now_. We are triggering the future. And when that happens, all the queued queries will be sent at once to the database, then received at once after the *single round trip*, and sent back to the respective futures. So `value` will return the result of the count query, and enumerating  the `@articles` (or calling `to_a`) will return the array of articles. One thing to note here is that when we do the latter action, _no query will be sent_, since the result is already there, it came from the previous action.
+Now here comes the important part. When we call `value` on the object returned from `future_count`, we are now saying that we want the result _now_. We are triggering the future. And when that happens, all the queued queries will be sent at once to the database, then received at once after the _single round trip_, and sent back to the respective futures. So `value` will return the result of the count query, and enumerating the `@articles` (or calling `to_a`) will return the array of articles. One thing to note here is that when we do the latter action, _no query will be sent_, since the result is already there, it came from the previous action.
 
 This is what we gain. Same amount of queries, less round trips to the database. Nice, isn't it?
 

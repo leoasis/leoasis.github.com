@@ -31,14 +31,98 @@ And it turned out that while migrating some of the views I had with Marionette, 
 Let's see a simple example in both ways to show you what this means:
 
 First for Backbone.View with Marionette and Rivets:
-<script src="https://gist.github.com/leoasis/9701509.js?file=marionette_rivets.js"></script>
+
+```js
+var List = Backbone.Marionette.CollectionView.extend({
+  itemView: Item,
+  tagName: "ul"
+});
+
+var Item = Backbone.Marionette.ItemView.extend({
+  tagName: "li",
+  template: function(data) {
+    return '<span rv-text="model.name"></span><p rv-text="model.description"><p>';
+  },
+
+  onRender: function() {
+    this.binder = rivets.bind(this.el, { model: this.model });
+  },
+
+  onClose: function() {
+    if (this.binder) this.binder.unbind();
+  }
+});
+```
 
 And now with React:
-<script src="https://gist.github.com/leoasis/9701509.js?file=react.js"></script>
+
+```jsx
+var List = React.createClass({
+  mixins: [React.Backbone],
+  updateOnProps: { items: "collection" },
+
+  render: function() {
+    var items = this.props.items.map(function(item) {
+      return <Item item={item} key={item.cid} />;
+    });
+    return <ul>{items}</ul>;
+  }
+});
+
+var Item = React.createClass({
+  mixins: [React.Backbone],
+  updateOnProps: { item: "model" },
+
+  render: function() {
+    return (
+      <li>
+        <span>{this.props.item.get("name")}</span>
+        <p>{this.props.item.get("description")}</p>
+      </li>
+    );
+  }
+});
+```
 
 Notice that in the React version, we're not using any plugin or library, just plain React and Backbone. Actually, the only thing we need is a small mixin to `forceUpdate` the component whenever any event happens in the model or collection. It's really simple:
 
-<script src="https://gist.github.com/leoasis/9701509.js?file=react_backbone.js"></script>
+```js
+React.Backbone = {
+  listenToProps: function(props) {
+    _.each(
+      this.updateOnProps,
+      function(events, propName) {
+        switch (events) {
+          case "collection":
+            events = "add remove reset sort";
+            break;
+          case "model":
+            events = "change";
+        }
+        this.listenTo(props[propName], events, function() {
+          this.forceUpdate();
+        });
+      },
+      this
+    );
+  },
+
+  componentDidMount: function() {
+    this.listenToProps(this.props);
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.stopListening();
+    this.listenToProps(nextProps);
+  },
+
+  componentWillUnmount: function() {
+    this.stopListening();
+  }
+};
+
+_.extend(React.Backbone, Backbone.Events);
+```
 
 That's it! You have a list of elements that updates whenever the collection or any item changes. To make a fair comparison, think of what Marionette and Rivets are doing internally listening to events in the models and collections. Now React allows us to completely remove that code and create components by thinking about what to render, not how, and that is by rendering everything into a Virtual DOM that can later be used to optimize the actual DOM manipulation.
 

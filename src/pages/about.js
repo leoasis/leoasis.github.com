@@ -19,7 +19,7 @@ class AboutPage extends React.Component {
       <div>
         <Helmet title={siteTitle} />
         <PageTitle>{siteAuthor}</PageTitle>
-        <Sub>Buenos Aires, Argentina</Sub>
+        <Sub>London, United Kingdom</Sub>
 
         <p>
           I'm a fan of technology who is always seeking for new stuff to learn,
@@ -34,10 +34,12 @@ class AboutPage extends React.Component {
 
         <p>
           I'm currently working at{" "}
-          <a href="http://match.com" target="_blank" rel="noopener">
-            Match.com
-          </a>, doing cool stuff with Javascript and React. I'm a lover of open
-          source, you can check my contributions in{" "}
+          <a href="http://twitter.com" target="_blank" rel="noopener">
+            Twitter
+          </a>, doing cool stuff with Javascript on{" "}
+          <a href="http://tweetdeck.twitter.com" target="_blank" rel="noopener">
+            TweetDeck
+          </a>. I'm a lover of open source, you can check my contributions in{" "}
           <a href="http://github.com/leoasis" target="_blank" rel="noopener">
             my Github account
           </a>.
